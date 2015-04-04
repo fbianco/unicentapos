@@ -932,15 +932,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 // added by janar153 @ 24.12.2013 to add scale barcode support
 // JG 27 Apr 2014 - missing bracket enclosures                } else if((sCode.length() == 13) && sCode.startsWith("2") || sCode.startsWith("02")) {
 //                } else if((sCode.length() == 13) || ((sCode.length() == 8)) && (sCode.startsWith("2") || sCode.startsWith("02"))) {
-                } else if((sCode.length() == 13) || (sCode.length() == 8) || (sCode.startsWith("2") || sCode.startsWith("02"))) {                    
+                } else if((sCode.length() == 13) && ( (sCode.startsWith("2") || sCode.startsWith("02")) )) {                    
                     try {
-                        ProductInfoExt oProduct = dlSales.getProductInfoByCode(sCode);
+                        ProductInfoExt oProduct = dlSales.getProductInfoByCode(sCode.substring(0,8));
                         if(oProduct == null) {
                             Toolkit.getDefaultToolkit().beep();
 //JG Aug 2014 - MessageInf Type inappropriate
 //                            new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.noproduct")).show(this);
                             JOptionPane.showMessageDialog(null,
-                                sCode + " - " + AppLocal.getIntString("message.noproduct"),
+                                sCode .substring(0,8) + " - " + AppLocal.getIntString("message.noproduct"),
                                 "Check", JOptionPane.WARNING_MESSAGE);  
                             stateToZero();
                         } else {
