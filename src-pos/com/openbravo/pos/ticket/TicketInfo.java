@@ -93,7 +93,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
         return Hostname;
     }
 
-    
+
     /** Creates new TicketModel */
     public TicketInfo() {
         m_sId = UUID.randomUUID().toString();
@@ -166,7 +166,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
 
         payments = new ArrayList<>(); // JG June 2102 diamond inference
         taxes = null;
-  
+
     }
 
     /**
@@ -256,7 +256,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
     public int getPickupId() {
         return m_iPickupId;
     }
-    
+
     /**
      *
      * @param info
@@ -270,7 +270,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
             name.append(m_User.getName());
             name.append(" - ");
         }
-        
+
         if (info == null) {
             if (m_iTicketId == 0) {
                 name.append("(").append(m_dateformat.format(m_dDate)).append(" ").append(Long.toString(m_dDate.getTime() % 1000)).append(")");
@@ -279,7 +279,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
             }
         } else {
             name.append(info.toString());
-          
+
             }
         if (getCustomerId() != null) {
             name.append(" - ");
@@ -287,7 +287,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
         }
         return name.toString();
     }
-    
+
     /**
      *
      * @return
@@ -355,7 +355,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
             return m_Customer.getId();
         }
     }
-    
+
     /**
      *
      * @return
@@ -365,7 +365,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
             ? ( getPayments().get(getPayments().size()-1) ).getTransactionID()
             : StringUtils.getCardNumber(); //random transaction ID
     }
-    
+
     /**
      *
      * @return
@@ -490,7 +490,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
     public int getLinesCount() {
         return m_aLines.size();
     }
-    
+
     /**
      *
      * @return
@@ -543,9 +543,12 @@ public final class TicketInfo implements SerializableRead, Externalizable {
      * @return
      */
     public double getTotal() {
-        return getSubTotal() + getTax();
+        int total = (int) Math.round ( ((getSubTotal() + getTax()) *100 ));
+        int rounding = total % 5; // rounding to 0.05 ct
+        return (total - rounding)/100.0;
+
     }
-    
+
     /**
      *
      * @return
@@ -566,7 +569,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
      */
     public double getTendered() {
         return getTotalPaid();
-    }    
+    }
 
     /**
      *
@@ -674,7 +677,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
             t.add(oLine.getSubValue());
         }
 
-        // return dSuma;       
+        // return dSuma;
         Collection<TicketTaxInfo> avalues = m.values();
         return avalues.toArray(new TicketTaxInfo[avalues.size()]);
     }
@@ -684,12 +687,12 @@ public final class TicketInfo implements SerializableRead, Externalizable {
      * @return
      */
     public String printId() {
-// We need acces to the config file        
-      AppConfig m_config =  new AppConfig(new File((System.getProperty("user.home")), AppLocal.APP_ID + ".properties"));        
+// We need acces to the config file
+      AppConfig m_config =  new AppConfig(new File((System.getProperty("user.home")), AppLocal.APP_ID + ".properties"));
       m_config.load();
       String receiptSize =(m_config.getProperty("till.receiptsize"));
       String receiptPrefix =(m_config.getProperty("till.receiptprefix"));
-// we have finished with m_config so unload it      
+// we have finished with m_config so unload it
       m_config =null;
 
 
@@ -698,21 +701,21 @@ public final class TicketInfo implements SerializableRead, Externalizable {
             if (receiptSize == null || (Integer.parseInt(receiptSize) <= tmpTicketId.length())){
                 if (receiptPrefix != null){
                     tmpTicketId=receiptPrefix+tmpTicketId;
-                } 
+                }
                 return tmpTicketId;
-            }            
+            }
             while (tmpTicketId.length()<Integer.parseInt(receiptSize)){
                 tmpTicketId="0"+tmpTicketId;
             }
             if (receiptPrefix != null){
                     tmpTicketId=receiptPrefix+tmpTicketId;
-            }             
+            }
             return tmpTicketId;
         } else {
             return "";
         }
     }
-    
+
     /**
      *
      * @return
@@ -727,7 +730,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
      */
     public String printUser() {
         return m_User == null ? "" : m_User.getName();
-        
+
     }
     /**
      * JG July 2014
@@ -740,13 +743,13 @@ public final class TicketInfo implements SerializableRead, Externalizable {
     public String getHost() {
         return m_sHost;
     }
-    
+
     public String printHost() {
         return StringUtils.encodeXML(m_sHost);
     }
-   
-    
-    
+
+
+
 // Added JDL 28.05.13 for loyalty card functions
 
     /**
@@ -755,7 +758,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
         public void clearCardNumber(){
         loyaltyCardNumber=null;
     }
-    
+
     /**
      *
      * @param cardNumber
@@ -763,7 +766,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
     public void setLoyaltyCardNumber(String cardNumber){
         loyaltyCardNumber=cardNumber;
     }
-    
+
     /**
      *
      * @return
@@ -772,7 +775,7 @@ public final class TicketInfo implements SerializableRead, Externalizable {
         return (loyaltyCardNumber);
     }
 // Loyalty card functions added
-         
+
     /**
      *
      * @return
@@ -853,5 +856,5 @@ public final class TicketInfo implements SerializableRead, Externalizable {
     public void setOldTicket(Boolean otState) {
 	oldTicket = otState;
 }
-    
+
 }
