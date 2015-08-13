@@ -63,7 +63,7 @@ public class StartPOS {
             i = new InstanceQuery();
             i.getAppMessage().restoreWindow();
             return false;
-// JG 6 May 2013 to Multicatch
+        // JG 6 May 2013 to Multicatch
         } catch (RemoteException | NotBoundException e) {
             return true;
         }  
@@ -87,11 +87,11 @@ public class StartPOS {
                 config.load();
                 
                 // set Locale.
-                String slang = config.getProperty("user.language");
-                String scountry = config.getProperty("user.country");
-                String svariant = config.getProperty("user.variant");
-                if (slang != null && !slang.equals("") && scountry != null && svariant != null) {                                        
-                    Locale.setDefault(new Locale(slang, scountry, svariant));
+                String sLang = config.getProperty("user.language");
+                String sCountry = config.getProperty("user.country");
+                String sVariant = config.getProperty("user.variant");
+                if (sLang != null && !sLang.equals("") && sCountry != null && sVariant != null) {
+                    Locale.setDefault(new Locale(sLang, sCountry, sVariant));
                 }
                 
                 // Set the format patterns
@@ -112,11 +112,11 @@ public class StartPOS {
                     } else if (laf instanceof SubstanceSkin) {                      
                         SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);
                     }
-// JG 6 May 2013 to multicatch
+                // JG 6 May 2013 to multicatch
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {                
                     logger.log(Level.WARNING, "Cannot set Look and Feel", e);
                 }
-// JG July 2014 Hostname for Tickets
+                // JG July 2014 Hostname for Tickets
                 String hostname = config.getProperty("machine.hostname");
                 TicketInfo.setHostname(hostname);
                 
